@@ -7,7 +7,7 @@ export const CartReducer = (state, action) => {
 
     switch (action.type) {
         case 'ADD_TO_CART':
-            // console.log('Add to cart Case');
+            console.log('Add to cart Case');
             const check = shoppingCart.find(product => product.id === action.id);
             if (check) {
                 return state
@@ -19,6 +19,17 @@ export const CartReducer = (state, action) => {
                 return { shoppingCart: [product, ...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
             }
             break;
+
+        case 'INC':
+            console.log('Add to cart quantity');
+            product = action.cart;
+            product.Qty = product.Qty + 1;
+            updatePrice = totalPrice + product.price;
+            updateQty = Qty + product.Qty;
+            index = shoppingCart.findIndex(cart => cart.id === action.id);
+            shoppingCart[index] = product;
+            return{shoppingCart : [...shoppingCart], totalPrice:updatePrice,Qty:updateQty} 
+
         default:
             return state
     }
