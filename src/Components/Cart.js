@@ -1,12 +1,35 @@
 import React, { useContext } from 'react'
 import { CartContext } from "../Global/CartContext"
 import StripeCheckout from 'react-stripe-checkout'
+import axios from 'axios';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
-const Cart = () => {
+// toast.configure();
+
+const Cart = (props) => {
     // const data = useContext(CartContext);
     // console.log(data);
     const { shoppingCart, totalPrice, Qty, dispatch } = useContext(CartContext);
-    const handleToken = (token) =>{
+    const handleToken = async (token) =>{
+        const product = {name: 'All Products', price: totalPrice}
+        const response = await axios.post('http://localhost:5000/checkout', {
+            token,
+            product
+        });
+        const {status} = response.data;
+        if(status === 'success'){
+           
+            dispatch({type: 'EMPTY'});
+            props.history.push(`/`)
+            // toast.success("You have paid successfully now you can continue your shopping!"
+            // , {
+            //   position: toast.POSITION.TOP_RIGHT
+            // });
+
+        } else {
+         
+        }
 
     }
 
@@ -55,15 +78,15 @@ const Cart = () => {
                             <div className="item-price">${totalPrice}.00</div>
                         </div>
                         <div className="stripe-section">
+                        {/* Stripe.setPublishableKey('PUBLISHABLE_KEY'); */}
                              <StripeCheckout 
-                             stripekey ="pk_test_51MjudJSA5EkyKwu1DgYKS8TDfLNYFYvblP3OUhu96ASGqCWiyJSWPbhVZCAtQlHZgY8zXMCVx7W3RrcyqUPyWaZs00QVTgQbsu"
-                                tiken={handleToken}
-                                billingAddress 
-                                shippingAddress
-                                amount = {totalPrice * 100}
-                                name="Product Details"
-                             > 
-                             </StripeCheckout>
+                             stripeKey ="pk_test_51MjudJSA5EkyKwu1DgYKS8TDfLNYFYvblP3OUhu96ASGqCWiyJSWPbhVZCAtQlHZgY8zXMCVx7W3RrcyqUPyWaZs00QVTgQbsu" 
+                             token={handleToken}
+                             billingAddress
+                             shippingAddress
+                             amount = {totalPrice * 100}
+                             name="all products in the cart" 
+                             />  
                         </div>
                     </div>
                 </div> : ''}
