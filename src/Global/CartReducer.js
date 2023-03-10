@@ -21,14 +21,26 @@ export const CartReducer = (state, action) => {
             break;
 
         case 'INC':
-            console.log('Add to cart quantity');
+            console.log('Add to cart Increment');
             product = action.cart;
             product.Qty = product.Qty + 1;
             updatePrice = totalPrice + product.price;
             updateQty = Qty + product.Qty;
             index = shoppingCart.findIndex(cart => cart.id === action.id);
             shoppingCart[index] = product;
-            return{shoppingCart : [...shoppingCart], totalPrice:updatePrice,Qty:updateQty} 
+            return { shoppingCart: [...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
+            break;
+
+        case 'DEC':
+            console.log('Add to cart Decrement');
+            product = action.cart;
+            product.Qty = product.Qty - 1;
+            updatePrice = totalPrice - product.price;
+            updateQty = Qty + product.Qty;
+            index = shoppingCart.findIndex(cart => cart.id === action.id);
+            shoppingCart[index] = product;
+            return { shoppingCart: [...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
+            break;
 
         default:
             return state
