@@ -25,7 +25,7 @@ export const CartReducer = (state, action) => {
             product = action.cart;
             product.Qty = product.Qty + 1;
             updatePrice = totalPrice + product.price;
-            updateQty = Qty + product.Qty;
+            updateQty = Qty + 1;
             index = shoppingCart.findIndex(cart => cart.id === action.id);
             shoppingCart[index] = product;
             return { shoppingCart: [...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
@@ -33,14 +33,29 @@ export const CartReducer = (state, action) => {
 
         case 'DEC':
             console.log('Add to cart Decrement');
+
             product = action.cart;
-            product.Qty = product.Qty - 1;
-            updatePrice = totalPrice - product.price;
-            updateQty = Qty + product.Qty;
-            index = shoppingCart.findIndex(cart => cart.id === action.id);
-            shoppingCart[index] = product;
-            return { shoppingCart: [...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
+            if (product.Qty > 1) {
+                product.Qty = product.Qty - 1;
+                updatePrice = totalPrice - product.price;
+                updateQty = Qty - 1;
+                index = shoppingCart.findIndex(cart => cart.id === action.id);
+                shoppingCart[index] = product;
+                return { shoppingCart: [...shoppingCart], totalPrice: updatePrice, Qty: updateQty }
+            } else {
+                return state
+            }
             break;
+
+        case 'DELETE':
+            const filtered = shoppingCart.filter(product => product.id !== action.id);
+            product = action.cart;
+            updateQty = Qty - product.Qty;
+            updatePrice = totalPrice - product.price * product.Qty;
+            return { shoppingCart: [...filtered], totalPrice: updatePrice, Qty: updateQty }
+            break;
+
+
 
         default:
             return state

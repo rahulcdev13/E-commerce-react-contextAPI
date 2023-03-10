@@ -26,7 +26,7 @@ const Cart = () => {
                                         <span className='cart-product-qty'>{cart.Qty}</span>
                                         <span className='dec'><i className="fa-solid fa-minus" onClick={() => dispatch({ type: 'DEC', id: cart.id, cart})}></i></span>
                                         <span className='cart-product-totalPrice'>${cart.price * cart.Qty}</span>
-                                        <span className='delet-product'><i className="fa-solid fa-trash"></i></span>
+                                        <span className='delet-product'><i className="fa-solid fa-trash" onClick={()=> dispatch({type:"DELETE",id:cart.id,cart})}></i></span>
                                     </div>
                                 </>
                             )
